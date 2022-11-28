@@ -12,6 +12,7 @@ from collections import defaultdict
 from collections import OrderedDict
 import logging
 import os
+import pathlib
 
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
@@ -26,7 +27,7 @@ from nms.nms import soft_oks_nms
 logger = logging.getLogger(__name__)
 
 
-class COCODataset(JointsDataset):
+class ThermalCocoFormat(JointsDataset):
     '''
     "keypoints": {
         0: "nose",
@@ -196,14 +197,14 @@ class COCODataset(JointsDataset):
 
             center, scale = self._box2cs(obj['clean_bbox'][:4])
             rec.append({
-                'image': self.image_path_from_index(index),
+                'image': self.image_path_from_imAnn(im_ann),
                 'center': center,
                 'scale': scale,
                 'joints_3d': joints_3d,
                 'joints_3d_vis': joints_3d_vis,
                 'filename': '',
                 'imgnum': 0,
-                'image_id': self.image_path_from_index(index),
+                'image_id': index,
             })
 
         return rec
@@ -229,9 +230,10 @@ class COCODataset(JointsDataset):
 
         return center, scale
 
-    def image_path_from_index(self, index):
+    def image_path_from_imAnn(self, im_ann):
         """ example: images / train2017 / 000000119993.jpg """
-        file_name = '%012d.jpg' % index
+
+        file_name = im_ann["file_name"]
         if '2014' in self.image_set:
             file_name = 'COCO_%s_' % self.image_set + file_name
 
@@ -261,7 +263,8 @@ class COCODataset(JointsDataset):
             det_res = all_boxes[n_img]
             if det_res['category_id'] != 1:
                 continue
-            img_name = self.image_path_from_index(det_res['image_id'])
+            im_ann = self.coco.loadImgs(det_res['image_id'])[0]
+            img_name = self.image_path_from_imAnn(im_ann)
             box = det_res['bbox']
             score = det_res['score']
 
@@ -312,7 +315,9 @@ class COCODataset(JointsDataset):
                 'scale': all_boxes[idx][2:4],
                 'area': all_boxes[idx][4],
                 'score': all_boxes[idx][5],
-                'image': int(img_path[idx][-16:-4])
+                #'image': int(img_path[idx][-16:-4])
+                #'image': pathlib.Path(img_path[idx]).stem
+                'image': int(img_path[idx])
             })
         # image x person x (keypoints)
         kpts = defaultdict(list)

@@ -18,7 +18,7 @@ from core.inference import get_max_preds
 
 
 def save_batch_image_with_joints(batch_image, batch_joints, batch_joints_vis,
-                                 file_name, nrow=8, padding=2):
+                                 file_name, nrow=8, padding=0):
     '''
     batch_image: [batch_size, channel, height, width]
     batch_joints: [batch_size, num_joints, 3],

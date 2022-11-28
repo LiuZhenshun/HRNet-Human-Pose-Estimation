@@ -116,6 +116,7 @@ class JointsDataset(Dataset):
         image_file = db_rec['image']
         filename = db_rec['filename'] if 'filename' in db_rec else ''
         imgnum = db_rec['imgnum'] if 'imgnum' in db_rec else ''
+        image_id = db_rec['image_id'] if 'image_id' in db_rec else ''
 
         if self.data_format == 'zip':
             from utils import zipreader
@@ -173,8 +174,7 @@ class JointsDataset(Dataset):
 
         if self.transform:
             input = self.transform(input)
-        # cv2.imshow('demon', input.numpy().transpose(1,2,0))
-        # cv2.waitKey(0)
+
         for i in range(self.num_joints):
             if joints_vis[i, 0] > 0.0:
                 joints[i, 0:2] = affine_transform(joints[i, 0:2], trans)
@@ -193,7 +193,8 @@ class JointsDataset(Dataset):
             'center': c,
             'scale': s,
             'rotation': r,
-            'score': score
+            'score': score,
+            'image_id': str(image_id)
         }
 
         return input, target, target_weight, meta

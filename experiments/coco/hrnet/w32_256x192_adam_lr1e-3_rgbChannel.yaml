@@ -12,15 +12,17 @@ PRINT_FREQ: 100
 
 DATASET:
   COLOR_RGB: true
-  DATASET: 'coco'
+  DATASET: 'ThermalCocoFormat'
+  #DATASET: 'coco'
   DATA_FORMAT: jpg
   FLIP: true
   NUM_JOINTS_HALF_BODY: 8
   PROB_HALF_BODY: 0.3
-  ROOT: 'data/coco/'
+  ROOT: 'data/coco_rgb_channel/'
+  #ROOT: 'data/coco/'
   ROT_FACTOR: 45
-  SCALE_FACTOR: 0.35
-  TEST_SET: 'val2017'
+  SCALE_FACTOR: 0.1
+  TEST_SET: 'train2017'
   TRAIN_SET: 'train2017'
 MODEL:
   INIT_WEIGHTS: true
