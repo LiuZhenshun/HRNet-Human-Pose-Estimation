@@ -287,7 +287,7 @@ def infernce2json(config, val_loader, val_dataset, model, output_dir):
         json_object = json.dumps(res, indent=4)
 
         # Writing to sample.json
-        with open("/media/hkuit164/Backup/pose_thermal/result1.json", "w") as outfile:
+        with open(output_dir, "w") as outfile:
             outfile.write(json_object)
             # image = input.cpu().numpy()[0].transpose(1,2,0).copy()
             # print(image.shape)

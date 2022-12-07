@@ -61,6 +61,14 @@ def parse_args():
                         help='prev Model directory',
                         type=str,
                         default='')
+    parser.add_argument('--DetectionJson',
+                        help='path to the DetectionJson',
+                        type=str,
+                        default='')
+    parser.add_argument('--KeypointJson',
+                        help='path to the DetectionJson',
+                        type=str,
+                        default='')
 
     args = parser.parse_args()
     return args
@@ -106,7 +114,7 @@ def main():
     normalize = transforms.Normalize(
         mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
     )
-    jsonfile = '/media/hkuit164/Backup/pose_thermal/result.json'
+    jsonfile = args.DetectionJson
     num_joints = 17
     inputsize = [384,288]
 
@@ -131,8 +139,9 @@ def main():
     #     cv2.imshow('demon', valid_dataset[i][0].numpy().reshape(384,288,3))
     #     cv2.waitKey(0)
 
+
     # evaluate on validation set
-    infernce2json(cfg, valid_loader, valid_dataset, model, final_output_dir)
+    infernce2json(cfg, valid_loader, valid_dataset, model, args.KeypointJson)
 
 
 if __name__ == '__main__':

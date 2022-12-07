@@ -39,12 +39,10 @@ def parse_args():
                         help='experiment configure file name',
                         required=True,
                         type=str)
-
     parser.add_argument('opts',
                         help="Modify config options using the command-line",
                         default=None,
                         nargs=argparse.REMAINDER)
-
     parser.add_argument('--modelDir',
                         help='model directory',
                         type=str,
@@ -64,7 +62,6 @@ def parse_args():
 
     args = parser.parse_args()
     return args
-
 
 def main():
     args = parse_args()
