@@ -1,5 +1,5 @@
 EasyDict==1.7
-shapely==1.6.4
+shapely==1.8.4
 Cython
 scipy
 pandas
